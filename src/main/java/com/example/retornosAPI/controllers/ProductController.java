@@ -1,6 +1,6 @@
 package com.example.retornosAPI.controllers;
 
-import com.example.retornosAPI.models.Product;
+import com.example.retornosAPI.dtos.ProductDto;
 import com.example.retornosAPI.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,19 +19,19 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-		Product createdProduct = service.createProduct(product);
-		URI location = URI.create(String.format("/products/%d", createdProduct.id()));
-		return ResponseEntity.created(location).body(createdProduct);
+	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+		ProductDto createdProductDto = service.createProduct(productDto);
+		URI location = URI.create(String.format("/products/%d", createdProductDto.id()));
+		return ResponseEntity.created(location).body(createdProductDto);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+	public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
 		return ResponseEntity.ok(service.getProductById(id));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Product>> getAllProducts() {
+	public ResponseEntity<List<ProductDto>> getAllProducts() {
 		return ResponseEntity.ok(service.getAllProducts());
 	}
 
