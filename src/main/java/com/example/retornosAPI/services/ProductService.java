@@ -26,12 +26,12 @@ public class ProductService {
 	public ProductDto getProductById(Long id) {
 		ProductEntity entity = repository.findById(id)
 				                       .orElseThrow(() -> new RuntimeException("Product not found"));
-		return new ProductDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice());
+		return new ProductDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice(), entity.getAmount(), entity.getCategory());
 	}
 
 	public List<ProductDto> getAllProducts() {
 		return repository.findAll().stream()
-				       .map(entity -> new ProductDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice()))
+				       .map(entity -> new ProductDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice(), entity.getAmount(), entity.getCategory()))
 				       .collect(Collectors.toList());
 	}
 

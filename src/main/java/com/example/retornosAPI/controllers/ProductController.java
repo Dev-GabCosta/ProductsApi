@@ -2,6 +2,7 @@ package com.example.retornosAPI.controllers;
 
 import com.example.retornosAPI.dtos.ProductDto;
 import com.example.retornosAPI.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+	public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
 		ProductDto createdProductDto = service.createProduct(productDto);
 		URI location = URI.create(String.format("/products/%d", createdProductDto.id()));
 		return ResponseEntity.created(location).body(createdProductDto);
