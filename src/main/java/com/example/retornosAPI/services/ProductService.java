@@ -18,9 +18,9 @@ public class ProductService {
 	}
 
 	public ProductDto createProduct(ProductDto productDto) {
-		ProductEntity entity = new ProductEntity(null, productDto.name(), productDto.description(), productDto.price());
+		ProductEntity entity = new ProductEntity(null, productDto.name(), productDto.description(), productDto.price(), productDto.amount(), productDto.category());
 		ProductEntity savedEntity = repository.save(entity);
-		return new ProductDto(savedEntity.getId(), savedEntity.getName(), savedEntity.getDescription(), savedEntity.getPrice());
+		return new ProductDto(savedEntity.getId(), savedEntity.getName(), savedEntity.getDescription(), savedEntity.getPrice(), savedEntity.getAmount(), savedEntity.getCategory());
 	}
 
 	public ProductDto getProductById(Long id) {
@@ -53,7 +53,7 @@ public class ProductService {
 		ProductEntity savedEntity = repository.save(existingEntity);
 
 		// Retornar o produto atualizado
-		return new ProductDto(savedEntity.getId(), savedEntity.getName(), savedEntity.getDescription(), savedEntity.getPrice());
+		return new ProductDto(savedEntity.getId(), savedEntity.getName(), savedEntity.getDescription(), savedEntity.getPrice(), savedEntity.getAmount(), savedEntity.getCategory());
 	}
 
 	// Buscar produtos pelo nome
@@ -69,7 +69,16 @@ public class ProductService {
 			System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
 		}
 		return entities.stream()
-				       .map(entity -> new ProductDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice()))
+				       .map(
+						       entity -> new ProductDto(
+								entity.getId(),
+								entity.getName(),
+								entity.getDescription(),
+								entity.getPrice(),
+								       entity.getAmount(),
+								       entity.getCategory()
+						       )
+				       )
 				       .collect(Collectors.toList());
 	}
 }
