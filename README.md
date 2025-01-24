@@ -1,12 +1,12 @@
-
+  e    
 # Projeto de API de Gerenciamento de Produtos
 
 Este projeto é uma API RESTful para gerenciamento de produtos. Ele permite criar, ler, atualizar e deletar produtos, além de realizar buscas por nome.
 
 ## Tecnologias utilizadas
 
-* Java 11
-* Spring Boot 2.x
+* Java 17
+* Spring Boot 3.4.1
 * Maven
 * JPA (Java Persistence API)
 * Hibernate
