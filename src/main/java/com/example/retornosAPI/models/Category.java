@@ -1,6 +1,8 @@
 package com.example.retornosAPI.models;
 
+import com.example.retornosAPI.exceptions.CategoryNotFoundException;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 public enum Category {
 	ELECTRONICS,
@@ -20,7 +22,7 @@ public enum Category {
 
 		}
 
-		throw new IllegalArgumentException("Categoria inválida: " + value);
+		throw new CategoryNotFoundException("Categoria inválida: " + value);
 	}
 
-	}
+}

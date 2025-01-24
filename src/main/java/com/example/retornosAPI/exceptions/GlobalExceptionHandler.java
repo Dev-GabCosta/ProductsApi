@@ -9,20 +9,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(InvalidFormatException.class)
-	public ResponseEntity<Map<String, String>> handleInvalidFormatException(InvalidFormatException exception) {
-		Map<String, String> error = new HashMap<>();
+	@ExceptionHandler(CategoryNotFoundException.class)
+	public ResponseEntity<Map<String, String>> handleCategoryNotFoundException(CategoryNotFoundException exception) {
+		Map<String, String> error = new LinkedHashMap<>();
 		String allowedValues = Arrays.stream(Category.values())
 				                     .map(Enum::name)
 				                     .collect(Collectors.joining(", "));
-		error.put("error", "Categoria inválida");
-		error.put("message", "Valores permitidos: " + allowedValues);
+		error.put("error", exception.getMessage());
+		error.put("Valores permitidos"  , allowedValues);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
+
 }

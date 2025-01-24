@@ -11,6 +11,7 @@ public record ProductDto(
 		@Size(min = 3, max = 100)
 		@NotNull(message = "Nome é obrigatório")
 		String name,
+		@Size(max = 500)
 		String description,
 		@NotNull(message = "O preço é obrigatório")
 		@Positive(message = "O preço deve ser maior que 0")
