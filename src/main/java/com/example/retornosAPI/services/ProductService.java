@@ -41,6 +41,8 @@ public class ProductService {
 	}
 
 	public void deleteProduct(Long id) {
+		repository.findById(id)
+				                       .orElseThrow(() -> new ResourceNotFoundException(showMessageNotFound(id)));
 		repository.deleteById(id);
 	}
 
@@ -48,7 +50,7 @@ public class ProductService {
 	public ProductDto updateProduct(Long id, ProductDto updatedProductDto) {
 		// Verificar se o produto existe
 		ProductEntity existingEntity = repository.findById(id)
-				                               .orElseThrow(() -> new RuntimeException(showMessageNotFound(id)));
+				                               .orElseThrow(() -> new ResourceNotFoundException(showMessageNotFound(id)));
 
 		// Atualizar os dados do produto
 		existingEntity.setName(updatedProductDto.name());
