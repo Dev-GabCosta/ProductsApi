@@ -1,6 +1,7 @@
 package com.example.retornosAPI.services;
 
 import com.example.retornosAPI.dtos.ProductDto;
+import com.example.retornosAPI.exceptions.ResourceNotFoundException;
 import com.example.retornosAPI.models.ProductEntity;
 import com.example.retornosAPI.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,12 @@ public class ProductService {
 
 	public ProductDto getProductById(Long id) {
 		ProductEntity entity = repository.findById(id)
-				                       .orElseThrow(() -> new RuntimeException("Product not found"));
+				                       .orElseThrow(() -> new ResourceNotFoundException(showMessageNotFound(id)));
 		return new ProductDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice(), entity.getAmount(), entity.getCategory());
+	}
+
+	private String showMessageNotFound(Long id) {
+		return "Nenhum produto com o id " + id + " foi encontrado";
 	}
 
 	public List<ProductDto> getAllProducts() {
@@ -43,7 +48,7 @@ public class ProductService {
 	public ProductDto updateProduct(Long id, ProductDto updatedProductDto) {
 		// Verificar se o produto existe
 		ProductEntity existingEntity = repository.findById(id)
-				                               .orElseThrow(() -> new RuntimeException("Product with ID " + id + " not found"));
+				                               .orElseThrow(() -> new RuntimeException(showMessageNotFound(id)));
 
 		// Atualizar os dados do produto
 		existingEntity.setName(updatedProductDto.name());
@@ -71,10 +76,10 @@ public class ProductService {
 		return entities.stream()
 				       .map(
 						       entity -> new ProductDto(
-								entity.getId(),
-								entity.getName(),
-								entity.getDescription(),
-								entity.getPrice(),
+								       entity.getId(),
+								       entity.getName(),
+								       entity.getDescription(),
+								       entity.getPrice(),
 								       entity.getAmount(),
 								       entity.getCategory()
 						       )

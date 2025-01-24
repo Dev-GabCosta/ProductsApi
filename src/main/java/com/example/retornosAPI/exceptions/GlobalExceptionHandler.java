@@ -2,6 +2,7 @@ package com.example.retornosAPI.exceptions;
 
 import com.example.retornosAPI.models.Category;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import jakarta.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -34,13 +35,21 @@ public class GlobalExceptionHandler {
 		Map<String, String> errors = new HashMap<>();
 
 		exception.getBindingResult()
-				         .getAllErrors()
-				         .forEach(error -> {
-					         String fieldName = ((FieldError) error).getField();
-					         String message = error.getDefaultMessage();
-									 errors.put(fieldName, message);
-				         });
+				.getAllErrors()
+				.forEach(error -> {
+					String fieldName = ((FieldError) error).getField();
+					String message = error.getDefaultMessage();
+					errors.put(fieldName, message);
+				});
 
-return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+	}
+
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException exception){
+		Map<String, String> error = new LinkedHashMap<>();
+		error.put("error", "Ops! Esse objeto não pôde ser encontrado. Talvez você esteja procurando por outra coisa");
+		error.put("message", exception.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 }
