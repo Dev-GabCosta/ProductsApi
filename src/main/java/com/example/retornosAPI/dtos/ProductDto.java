@@ -8,10 +8,10 @@ import jakarta.validation.constraints.Size;
 
 public record ProductDto(
 		Long id,
-		@Size(min = 3, max = 100)
+		@Size(min = 3, max = 100, message = "O nome deve ter de 3 a 100 caracteres")
 		@NotNull(message = "Nome é obrigatório")
 		String name,
-		@Size(max = 500)
+		@Size(max = 500, message = "A descrição deve ter no máximo 500 caracteres")
 		String description,
 		@NotNull(message = "O preço é obrigatório")
 		@Positive(message = "O preço deve ser maior que 0")
