@@ -3,6 +3,7 @@ package com.example.retornosAPI.controllers;
 import com.example.retornosAPI.dtos.ProductDto;
 import com.example.retornosAPI.services.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
-
 	private final ProductService service;
 
 	public ProductController(ProductService service) {
@@ -30,7 +30,7 @@ public class ProductController {
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDto productDto) {
 		ProductDto updatedProduct = service.updateProduct(id, productDto);
 		URI location = URI.create(String.format("/products/%d", updatedProduct.id()));
-		return ResponseEntity.ok().body(updatedProduct);
+		return ResponseEntity.ok().header("Location", location.toString()).body(updatedProduct);
 	}
 
 	@GetMapping("/{id}")
@@ -48,4 +48,12 @@ public class ProductController {
 		service.deleteProduct(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@GetMapping("/api/products")
+	public ResponseEntity<List<ProductDto>> getProductByName(@RequestParam String name) {
+		List<ProductDto> products = service.getProductsByName(name);
+		return ResponseEntity.ok().body(products);
+	}
+
+
 }
